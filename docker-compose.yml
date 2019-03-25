@@ -1,0 +1,32 @@
+version: "3.6"
+
+services:
+
+  cadvisor:
+    image: google/cadvisor:latest
+    restart: unless-stopped
+    volumes:
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run:/var/run:rw
+    command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influx:8086
+    ports:
+      - 8080:8080
+
+  influx:
+    image: influxdb
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+    environment:
+     - INFLUXDB_DB:cadvisor  
+    volumes:
+     - ./data/influx:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+     - ./data/grafana:/var/lib/grafana
