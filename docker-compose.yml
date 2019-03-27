@@ -9,15 +9,13 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /var/run:/var/run:ro
-    command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influx:8086 -storage_driver_user=cad -storage_driver_password=visor
+    command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influx:8086
 
   influx:
     image: influxdb
     restart: unless-stopped
     environment:
-     - INFLUXDB_DB:cadvisor  
-     - INFLUXDB_USER:cad  
-     - INFLUXDB_USER_PASSWORD:visor  
+     - INFLUXDB_DB=cadvisor 
     volumes:
      - ./data/influx:/var/lib/influxdb
 
