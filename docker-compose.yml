@@ -8,16 +8,12 @@ services:
     volumes:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-      - /var/run:/var/run:rw
+      - /var/run:/var/run:ro
     command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influx:8086
-    ports:
-      - 8080:8080
 
   influx:
     image: influxdb
     restart: unless-stopped
-    ports:
-      - 8086:8086
     environment:
      - INFLUXDB_DB:cadvisor  
     volumes:
